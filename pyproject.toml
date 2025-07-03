@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quazal_nex"
+version = "1.0.0"
+description = "NEX (Quazal Rendez-Vous) Library for Nintendo Wii U, 3DS & Switch written in Python."
+readme = "README.md"
+requires-python = ">=3.6"
+license = { text = "MIT" }
+
+authors = [
+  { name = "Link3DS Contributors" }
+]
+
+keywords = ["quazal", "nintendo", "wiiu", "3ds", "switch", "nex"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent"
+]
+
+[tool.setuptools]
+py-modules = ["common"]
