@@ -1,3 +1,11 @@
+class Structure:
+    pass # TODO - Finish the Structure class
+
+
+class Data(Structure):
+    pass
+
+
 class StationURL:
     def __init__(self, scheme="prudp", **kwargs):
         self.scheme = scheme
@@ -30,3 +38,12 @@ class StationURL:
                     key, value = entry.split('=', 1)
                     instance.fields[key] = value
         return instance
+
+
+class SeqCounter:
+    def __init__(self, start=0):
+        self.value = start
+
+    def increment(self):
+        self.value += 1
+        return self.value
