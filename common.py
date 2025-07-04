@@ -45,6 +45,36 @@ class Data(Structure):
         pass
 
 
+class DateTime:
+    def __init__(self, value):
+        self.value = value
+
+    def second(self):
+        return self.value & 63
+    
+    def minute(self):
+        return (self.value >> 6) & 63
+    
+    def hour(self):
+        return (self.value >> 12) & 31
+    
+    def day(self):
+        return (self.value >> 17) & 31
+    
+    def month(self):
+        return (self.value >> 22) & 15
+    
+    def year(self):
+        return self.value >> 26
+    
+    def __repr__(self):
+        return "%i-%i-%i %i:%02i:%02i" %(self.day(), self.month(), self.year(), self.hour(), self.minute(), self.second())
+    
+    @classmethod
+    def make(cls, day, month, year, hour, minute, second):
+        return cls(second | (minute << 6) | (hour << 12) | (day << 17) | (month << 22) | (year << 26))
+
+
 class StationURL:
     def __init__(self, scheme="prudp", **kwargs):
         self.scheme = scheme
