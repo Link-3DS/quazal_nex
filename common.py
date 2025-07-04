@@ -27,11 +27,22 @@ class ZlibCompression:
 
 
 class Structure:
-    pass # TODO - Finish the Structure class
+    def hierarchy(self):
+        return [self]
+    
+    def encode(self, stream):
+        pass
+    
+    def decode(self, stream):
+        pass
 
 
 class Data(Structure):
-    pass
+    def encode(self, stream):
+        pass
+    
+    def decode(self, stream):
+        pass
 
 
 class StationURL:
