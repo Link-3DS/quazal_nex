@@ -22,4 +22,4 @@ classifiers = [
 ]
 
 [tool.setuptools]
-py-modules = ["common"]
+py-modules = ["common", "rmc"]
