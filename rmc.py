@@ -1,3 +1,6 @@
+import streams, struct
+
+
 ERROR_MASK = 1 << 31
 
 
@@ -37,7 +40,59 @@ class RMCMessage:
         return inst
 
     def encode(self):
-        pass # TODO - Finish this
+        stream = streams.StreamOut()
 
-    def decode(self):
-        pass # TODO - Finish this
+        flag = 0x80 if self.is_request else 0
+
+        if self.protocol_id < 0x80:
+            stream.u8(self.protocol_id | flag)
+        else:
+            stream.u8(0x7F | flag)
+            stream.u16(self.protocol_id)
+
+        if self.is_request:
+            stream.u32(self.call_id)
+            stream.u32(self.method_id)
+            stream.write(self.method_parameters)
+        else:
+            if self.is_success:
+                stream.bool(True)
+                stream.u32(self.call_id)
+                stream.u32(self.method_id | 0x8000)
+                stream.write(self.method_parameters)
+            else:
+                stream.bool(False)
+                stream.u32(self.error_code)
+                stream.u32(self.call_id)
+        return struct.pack("I", stream.size()) + stream.get()
+
+
+    def decode(self, data):
+        stream = streams.StreamIn(data)
+
+        length = stream.u32()
+        if length != stream.size() - 4:
+            raise ValueError("RMC Message has unexpected size")
+        
+        protocol_id = stream.u8()
+
+        self.protocol_id = protocol_id & ~0x80
+
+        if self.protocol_id == 0x7F:
+            self.protocol_id = stream.u16()
+
+        if protocol_id&0x80:
+            self.is_request = True
+            self.call_id = stream.u32()
+            self.method_id = stream.u32()
+            self.method_parameters = stream.readall()
+        else:
+            self.is_request = False
+
+            if stream.bool():
+                self.call_id = stream.u32()
+                self.method_id = stream.u32() & ~0x8000
+                self.method_parameters = stream.readall()
+            else:
+                self.error_code = stream.u32()
+                self.call_id = stream.u32()
