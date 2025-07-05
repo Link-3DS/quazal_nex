@@ -1,4 +1,4 @@
-import zlib
+import zlib, streams
 
 
 class DummyCompression:
@@ -43,6 +43,47 @@ class Data(Structure):
     
     def decode(self, stream):
         pass
+
+
+# TODO - Change this
+class DataHolder:
+	object_map = {}
+
+	def __init__(self):
+		self.data = None
+		
+	def encode(self, stream):	
+		stream.string(self.data.__class__.__name__)
+		
+		substream = streams.StreamOut()
+		substream.add(self.data)
+		
+		stream.u32(len(substream.get()) + 4)
+		stream.buffer(substream.get())
+		
+	def decode(self, stream):
+		name = stream.string()
+		substream = stream.substream().substream()
+		self.data = substream.extract(self.object_map[name])
+		
+	@classmethod
+	def register(cls, object, name):
+		cls.object_map[name] = object
+
+
+class RVConnectionData(Structure):
+	def __init__(self):
+		super().__init__()
+		self.station = None
+		self.special_protocols = []
+		self.special_station_protocols = None
+		self.server_time = DateTime(0)
+	
+	def encode(self, stream):
+		stream.string(self.station)
+		stream.u32(0)
+		stream.string(self.special_station_protocols)
+		stream.u64(self.server_time)
 
 
 class DateTime:
