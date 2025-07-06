@@ -1,4 +1,5 @@
 import zlib, streams
+from rmc import ERROR_MASK
 
 
 class DummyCompression:
@@ -24,6 +25,15 @@ class ZlibCompression:
         if ratio != data[0]:
             raise ValueError("Unexpected compression ratio (expected %i, got %i)" %ratio, data[0])
         return decompressed
+    
+
+class SeqCounter:
+    def __init__(self, start=0):
+        self.value = start
+
+    def increment(self):
+        self.value += 1
+        return self.value
 
 
 class Structure:
@@ -148,12 +158,28 @@ class StationURL:
                     key, value = entry.split('=', 1)
                     instance.fields[key] = value
         return instance
+    
 
+class Result:
+    def __init__(self, code):
+        self.code = code
 
-class SeqCounter:
-    def __init__(self, start=0):
-        self.value = start
+    def success(self):
+        return (self.code & ERROR_MASK) == 0
 
-    def increment(self):
-        self.value += 1
-        return self.value
+    def error(self):
+        return (self.code & ERROR_MASK) != 0
+    
+
+class ResultRange(Structure):
+    def __init__(self):
+        self.offset = None
+        self.size = None
+
+    def encode(self, stream):
+        stream.u32(self.offset)
+        stream.u32(self.size)
+
+    def decode(self, stream):
+        self.offset = stream.u32()
+        self.size = stream.u32()
