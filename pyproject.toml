@@ -22,4 +22,4 @@ classifiers = [
 ]
 
 [tool.setuptools]
-py-modules = ["common", "rmc", "streams"]
+py-modules = ["common", "rc4", "rmc", "streams"]
