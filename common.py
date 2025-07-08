@@ -2,6 +2,19 @@ import zlib, streams
 from rmc import ERROR_MASK
 
 
+SYN_PACKET = 0
+CONNECT_PACKET = 1
+DATA_PACKET = 2
+DISCONNECT_PACKET = 3
+PING_PACKET = 4
+
+FLAG_ACK = 1
+FLAG_RELIABLE = 2
+FLAG_NEED_ACK = 4
+FLAG_HAS_SIZE = 8
+FLAG_MULTI_ACK = 0x200 # Maybe 512 in decimal ?
+
+
 class DummyCompression:
     def compress(self, data): 
         return data
