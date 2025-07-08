@@ -1,4 +1,5 @@
 from anynet import streams
+import common
 
 
 class StreamOut(streams.StreamOut):
@@ -40,3 +41,6 @@ class StreamIn(streams.StreamIn):
         inst = cls()
         inst.decode(self)
         return inst
+    
+    def datetime(self):
+        return common.DateTime(self.u64())
