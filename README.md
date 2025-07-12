@@ -7,4 +7,5 @@
 - [ ] Packet V0/V1/Lite
 - [ ] RMC
 - [ ] Kerberos
+- [ ] Errors
 - [ ] All Types
