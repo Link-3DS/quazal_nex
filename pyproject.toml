@@ -22,4 +22,4 @@ classifiers = [
 ]
 
 [tool.setuptools]
-py-modules = ["common", "kerberos", "packet", "rmc", "settings", "streams"]
+py-modules = ["common", "kerberos", "packet", "rmc", "settings", "streams", "transport"]

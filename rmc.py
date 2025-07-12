@@ -66,7 +66,6 @@ class RMCMessage:
                 stream.u32(self.call_id)
         return struct.pack("I", stream.size()) + stream.get()
 
-
     def decode(self, data):
         stream = streams.StreamIn(data)
 
