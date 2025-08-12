@@ -1,4 +1,4 @@
 # quazal_nex
 
 ## Credits
-- Kinany for Nex docs and NintendoClients.
+- Kinnay for Nex docs and NintendoClients.
