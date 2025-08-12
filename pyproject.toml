@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quazal_nex"
+version = "1.0.0"
+description = "NEX Library for Nintendo Wii U, Nintendo 3DS & Nintendo 3DS."
+authors = [
+    { name = "Link3DS Contributors" }
+]
+requires-python = ">=3.10"
+
+[tool.setuptools.packages.find]
+where = ["."]
